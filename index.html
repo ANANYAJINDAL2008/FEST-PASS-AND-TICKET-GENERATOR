@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEST PASS AND TICKET GENERATOR</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- External libraries for PDF and QR code generation -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="dark-mode">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="navigation-bar">
+        <div class="navbar-logo">
+            <h1 class="logo">FEST 2026</h1>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="switchTab('home')">HOME</button>
+            <button class="nav-btn" onclick="switchTab('generate')">GENERATE PASS</button>
+            <button class="nav-btn" onclick="switchTab('my-passes')">MY PASSES</button>
+        </div>
+        <button id="theme-btn" onclick="toggleTheme()">TOGGLE THEME</button>
+    </nav>
+
+    <!-- TAB 1: HOME VIEW -->
+    <section id="tab-home" class="tab-content active">
+        <div class="welcome-card">
+            <h2>Welcome to Fest 2026 Pass and Ticket Generator Portal</h2>
+            <p>Choose your artists, food items, interesting games and activities and instantly generate your digital event pass!</p>
+            <button class="primary-btn" onclick="switchTab('generate')">Create Your Pass</button>
+        </div>
+    </section>
+
+    <!-- TAB 2: PASS GENERATION FORM -->
+    <section id="tab-generate" class="tab-content">
+        <div class="form-container">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search artists, food stalls, or games...">
+            </div>
+
+            <!-- SECTION 1: PERSONAL DETAILS -->
+            <div class="form-group">
+                <h2>1. Enter Your Details</h2>
+                <input type="text" id="user-name" placeholder="Full Name" required>
+                <input type="text" id="roll-number" placeholder="Institute Roll Number" required>
+                <p class="or-text">OR paste an Image URL:</p>
+                <input type="url" id="user-image" placeholder="Image URL (e.g., https://...)" oninput="previewImage()">
+                <div id="image-preview-container">
+                    <img id="image-preview" src="" alt="Preview" style="display:none; width:80px; height:80px; border-radius:50%; object-fit:cover; margin-top:10px; border:2px solid #f59e0b;">
+                </div>
+            </div>
+
+            <!-- SECTION 2: PASS CATEGORY -->
+            <h2>2. Select Pass Category</h2>
+            <div class="pass-options">
+                <label class="pass-card">
+                    <input type="radio" name="pass" value="BRONZE" data-price="299" checked onclick="updateTotal()">
+                    <div><strong>BRONZE PASS</strong> - Rs 299 (General Entry)</div>
+                </label>
+                <label class="pass-card">
+                    <input type="radio" name="pass" value="SILVER" data-price="599" onclick="updateTotal()">
+                    <div><strong>SILVER PASS</strong> - Rs 599 (Front Access + 1 Voucher)</div>
+                </label>
+                <label class="pass-card">
+                    <input type="radio" name="pass" value="GOLD" data-price="999" onclick="updateTotal()">
+                    <div><strong>GOLD PASS</strong> - Rs 999 (VIP Access + 4 Vouchers)</div>
+                </label>
+            </div>
+
+            <!-- SECTION 3: ARTISTS -->
+            <section id="artists-selection" class="form-section">
+                <h2>3. Choose Performers & Artists</h2>
+                <div id="artists-grid" class="cards-grid"></div>
+            </section>
+
+            <!-- SECTION 4: FOOD & DRINKS -->
+            <section id="catering-selection" class="form-section">
+                <h2>4. Foods & Drinks Selection</h2>
+                <div id="food-list" class="items-list"></div>
+            </section>
+
+            <!-- SECTION 5: GAMES & ACTIVITIES -->
+            <section id="activities-selection" class="form-section">
+                <h2>5. Games & Activities</h2>
+                <div id="games-list" class="items-list"></div>
+            </section>
+
+            <!-- DYNAMIC PRICE SUMMARY -->
+            <div class="price-summary-box">
+                <h3>Total Price: <span id="total-price">Rs 299</span></h3>
+            </div>
+
+            <button class="btn btn-primary" onclick="generateTicket()">Create My Ticket</button>
+
+            <!-- GENERATED TICKET VIEW -->
+            <div id="ticket-result" class="ticket-hidden">
+                <div id="ticket-card" class="ticket-card">
+                    <h2 class="ticket-title" style="margin-top:0;">FEST 2026 DIGITAL PASS</h2>
+                    <img id="ticket-user-img" src="" alt="User Profile Picture" class="ticket-avatar">
+                    <h3 id="ticket-user-name" class="ticket-holder">Loading...</h3>
+                    <div class="ticket-details">
+                        <p>Roll No: <span id="ticket-user-roll">-</span></p>
+                        <p>Pass Tier: <strong id="ticket-pass-type">-</strong></p>
+                        <p>Total Paid: <span id="ticket-total">-</span></p>
+                        <p class="ticket-id-text">Ticket ID: <span id="ticket-id">-</span></p>
+                    </div>
+                    <div id="qrcode" class="ticket-qrcode"></div>
+                </div>
+                <button class="cta-btn" onclick="downloadPDF()">Download PDF Ticket</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- TAB 3: SAVED PASSES -->
+    <section id="tab-my-passes" class="tab-content">
+        <h2>Your Saved Passes</h2>
+        <div id="saved-passes-container"></div>
+    </section>
+    <!-- Organizer Portal Tab -->
+<div id="tab-organizer" class="tab-content">
+  <h2>Organizer Control Panel</h2>
+  
+  <!-- Search Bar -->
+  <div style="margin-bottom: 15px;">
+    <input 
+      type="text" 
+      id="organizer-search" 
+      placeholder="Search by Ticket ID, Roll No, or Name..." 
+      onkeyup="searchOrganizerTickets()"
+      style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: white;"
+    />
+  </div>
+
+  <!-- Ticket Management List -->
+  <div id="organizer-tickets-list">
+    <!-- Populated dynamically via script.js -->
+  </div>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

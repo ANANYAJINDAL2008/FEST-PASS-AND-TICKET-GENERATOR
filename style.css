@@ -1,0 +1,211 @@
+/* Base Styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), 
+              url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+/* Light Theme Styling */
+body.light-mode {
+  color: #1e293b;
+  background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.95)), 
+              url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1200&q=80') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  font-size: 20px;
+  margin: 0;
+  color: #f59e0b;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.tab-btn.active {
+  background: #6366f1;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.theme-btn {
+  background: #334155;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Tab Management */
+.tab-content {
+  display: none;
+  padding: 40px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Form inputs & buttons */
+input[type="text"], input[type="url"] {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 16px 0;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+body.light-mode input[type="text"], 
+body.light-mode input[type="url"] {
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+}
+
+.pass-card, .item-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(30, 41, 59, 0.7);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+body.light-mode .pass-card, 
+body.light-mode .item-card {
+  background: rgba(241, 245, 249, 0.9);
+}
+
+.price-summary-box {
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 15px 0;
+  text-align: center;
+  color: #f59e0b;
+}
+
+.cta-btn {
+  width: 100%;
+  padding: 14px;
+  background: #10b981;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.cta-btn:hover {
+  background: #059669;
+}
+
+/* Ticket Display Control */
+.ticket-hidden {
+  display: none;
+}
+
+.ticket-visible {
+  display: block;
+}
+
+/* Ticket Styling */
+.ticket-card {
+  background: rgba(30, 41, 59, 0.95);
+  border: 2px solid #f59e0b;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.ticket-card img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f59e0b;
+}
+
+.ticket-qrcode {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.or-text {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 5px 0;
+}
+
+/* My Passes Layout & Actions */
+#saved-passes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.saved-pass-wrapper {
+  background: rgba(30, 41, 59, 0.6);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pass-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
